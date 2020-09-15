@@ -1,1 +1,1 @@
-# cse3330_project1
+# CSE3330 Project 1
