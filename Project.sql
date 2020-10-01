@@ -1,0 +1,78 @@
+/*Project 1 Table
+DEFAULT 1, changes value to 1 if it is NULL.
+*/
+
+
+CREATE TABLE EMPLOYEE
+(
+  NAME  CHAR(15)  NOT NULL,
+  EMPLOYEE_SSN  CHAR(9) NOT NULL  DEFAULT 1,
+  BDATE DATE,
+  ADDRESS VARCHAR(30),
+  GENDER CHAR(1),
+  SALARY  INT,
+  MANAGER_NUM CHAR(9),
+  --Is supervisor and manager the same thing or no?
+  DEPT_NUM CHAR(9)  NOT NULL,
+  PRIMARY KEY (EMPLOYEE_SSN)
+);
+
+CREATE TABLE DEPARTMENT
+(
+  DEPT_NAME  CHAR(15)  NOT NULL DEFAULT 1,
+  DEPT_NUM  CHAR(9) NOT NULL  DEFAULT 1,
+  -- is location and department number the same on txt? it isn't the same thing on the table.
+  MANAGER_NUM CHAR(15),
+  STARTDATE DATE,
+  PRIMARY KEY (DEPT_NAME, DEPT_NUM),
+  --Is this supposed to include 'number,' and what is number? manager #?
+  UNIQUE (DEPT_NAME),
+  FOREIGN KEY (DEPT_NUM) REFERENCES EMPLOYEE(DEPT_NUM)
+  --connects the employee table and department table by linking.
+  --can we reference department number if it is a primary key in this table and not the employee table?
+);
+
+CREATE TABLE DEPT_LOCATIONS
+(
+  DEPT_NUM  CHAR(9) NOT NULL DEFAULT 1,
+  DEPT_LOCATION VARCHAR(30)  NOT NULL  DEFAULT 1,
+  PRIMARY KEY (DEPT_NUM, DEPT_LOCATION),
+  UNIQUE (DEPT_LOCATION),
+  FOREIGN KEY (DEPT_NUM) REFERENCES DEPARTMENT(DEPT_NUM)
+);
+
+
+CREATE TABLE PROJECT
+(
+  PROJECT_NAME  CHAR(15)  NOT NULL  DEFAULT 1,
+  PROJECT_NUM CHAR(9)  NOT NULL DEFAULT 1,
+  DEPT_LOCATION  VARCHAR(30),
+  DEPT_NUM  CHAR(9),
+  PRIMARY KEY (PROJECT_NAME, PROJECT_NUM),
+  UNIQUE (PROJECT_NAME),
+  FOREIGN KEY (DEPT_NUM) REFERENCES DEPARTMENT(DEPT_NUM),
+  FOREIGN KEY (DEPT_LOCATION) REFERENCES DEPT_LOCATIONS(DEPT_LOCATION)
+  --Do we need to connect to department locations to project?
+);
+
+CREATE TABLE WORKS_ON
+(
+  EMPLOYEE_SSN  CHAR(9)  NOT NULL DEFAULT 1,
+  PROJECT_NUM  CHAR (9) NOT NULL  DEFAULT 1,
+  HOURS DECIMAL(2,1),
+  PRIMARY KEY (PROJECT_NUM),
+  FOREIGN KEY (EMPLOYEE_SSN) REFERENCES EMPLOYEE(EMPLOYEE_SSN),
+  FOREIGN KEY (PROJECT_NUM) REFERENCES PROJECT(PROJECT_NUM)
+);
+
+
+
+
+-- Don't think we need this portion. Already included in the employee table.
+/*
+CREATE TABLE SUPERVISION
+(
+  EMPLOYEE_SSN CHAR(9) NOT NULL DEFAULT 1,
+  SUPER_SSN CHAR(9) NOT NULL  DEFAULT 1,
+  DEPT_NUM CHAR(9) NOT NULL DEFAULT 1
+);*/
